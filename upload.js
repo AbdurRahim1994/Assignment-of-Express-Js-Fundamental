@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 
 
 const app = express();
@@ -16,16 +17,16 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({ 
+var upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
         var ext = path.extname(file.originalname);
-        if(ext !== '.png') {
+        if (ext !== '.png' && ext !== '.jpg') {
             return cb(new Error('Only images are allowed'))
         }
         cb(null, true)
     },
-    limits:{
+    limits: {
         fileSize: 1024 * 1024
     }
 
@@ -40,6 +41,8 @@ app.post('/', (req, res) => {
             res.end("File upload success")
         }
     });
+
+
 });
 
 app.listen(4040, () => {
